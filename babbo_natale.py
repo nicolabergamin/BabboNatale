@@ -1,5 +1,6 @@
 import arcade
 import random
+import math
 
 
 
@@ -62,9 +63,12 @@ class BabboNatale(arcade.Window):
         self.crea_cookie()
     
     def crea_cookie(self):
+        distanza = 0
         self.cookie = arcade.Sprite("./assets/cookie.png")
-        self.cookie.center_x = random.randint(50, 550)
-        self.cookie.center_y = random.randint(50, 550)
+        while distanza <= 100:
+            self.cookie.center_x = random.randint(50, 550)
+            self.cookie.center_y = random.randint(50, 550)
+            distanza = math.sqrt((self.cookie.center_x-self.babbo.center_x)**2 + (self.cookie.center_y-self.babbo.center_y)**2)
         self.cookie.scale = 0.2
         self.lista_cookie.append(self.cookie)
     
