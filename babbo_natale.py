@@ -12,8 +12,8 @@ Dato questo giochino come partenza, aggiungere le seguenti modifiche:
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
-3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile
-4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)
+/3 - Contate quanti biscotti vengono raccolti, salvatelo in una variabile
+/4 - Mostrate con draw_text il punteggio (numero di biscotti raccolti)
 5 - Fate in modo che il nuovo biscotto venga sempre creato almeno a 100 pixel
     di distanza rispetto al giocatore
 
@@ -40,6 +40,7 @@ class BabboNatale(arcade.Window):
         self.lista_babbo = arcade.SpriteList()
         self.lista_cookie = arcade.SpriteList()
         self.suono_munch = arcade.load_sound("./assets/munch.mp3")
+        self.n_biscotti = 0
         
         self.up_pressed = False
         self.down_pressed = False
@@ -71,6 +72,7 @@ class BabboNatale(arcade.Window):
         self.clear()
         self.lista_cookie.draw()
         self.lista_babbo.draw()
+        arcade.draw_text(f"Score: {self.n_biscotti}", 0, 580, arcade.color.RED, 20)
         
     
     def on_update(self, delta_time):
@@ -116,6 +118,7 @@ class BabboNatale(arcade.Window):
                 arcade.play_sound(self.suono_munch)
             for cookie in collisioni:
                 cookie.remove_from_sprite_lists()
+                self.n_biscotti += 1
             self.crea_cookie() # creo un altro biscotto
     
     def on_key_press(self, tasto, modificatori):
