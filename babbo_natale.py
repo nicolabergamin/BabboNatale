@@ -8,7 +8,7 @@ Compiti per casa: La scorpacciata di Babbo Natale
 Dato questo giochino come partenza, aggiungere le seguenti modifiche:
 1 - Scaricare, disegnare o generare con AI un'immagine di sfondo
      e mostrarla poi come background
-2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo
+/2 - Premendo il tasto "M", il suono verrà mutato. Premendolo di nuovo
      il suono deve tornare. Avete due possibilità: o evitate proprio
      di far partire il suono, o vi guardate come funziona play_sound
      e vedete se c'è qualcosa che vi può essere utile
@@ -34,6 +34,7 @@ Fate questo esercizio in una repository su git e mandate il link al vostro accou
 class BabboNatale(arcade.Window):
     def __init__(self, larghezza, altezza, titolo):
         super().__init__(larghezza, altezza, titolo)
+        
         self.babbo = None
         self.cookie = None
         self.lista_babbo = arcade.SpriteList()
@@ -44,6 +45,7 @@ class BabboNatale(arcade.Window):
         self.down_pressed = False
         self.left_pressed = False
         self.right_pressed = False
+        self.mute = False
         
         self.velocita = 4
         
@@ -69,6 +71,7 @@ class BabboNatale(arcade.Window):
         self.clear()
         self.lista_cookie.draw()
         self.lista_babbo.draw()
+        
     
     def on_update(self, delta_time):
         # Calcola movimento in base ai tasti premuti
@@ -109,7 +112,8 @@ class BabboNatale(arcade.Window):
         collisioni = arcade.check_for_collision_with_list(self.babbo, self.lista_cookie)
         
         if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
-            arcade.play_sound(self.suono_munch)
+            if self.mute == False:
+                arcade.play_sound(self.suono_munch)
             for cookie in collisioni:
                 cookie.remove_from_sprite_lists()
             self.crea_cookie() # creo un altro biscotto
@@ -123,6 +127,11 @@ class BabboNatale(arcade.Window):
             self.left_pressed = True
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True
+        elif tasto == arcade.key.M:
+            if self.mute == False:
+                self.mute = True
+            else:
+                self.mute = False
     
     def on_key_release(self, tasto, modificatori):
         """Gestisce il rilascio dei tasti"""
